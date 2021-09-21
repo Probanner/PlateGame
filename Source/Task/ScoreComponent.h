@@ -41,11 +41,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	FVector GetRandomLocationToSpawn(FVector _Hight);
-
-	UFUNCTION(BlueprintCallable)
-	void SpawnBall(FVector _BallLocation);
-
 	UFUNCTION(BlueprintCallable) 
 	void SetScore(float _newScore);
 

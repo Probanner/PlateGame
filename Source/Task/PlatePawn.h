@@ -8,7 +8,7 @@
 #include "PlatePawn.generated.h"
 
 
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSpawnAnotherBall);
 UCLASS()
 class TASK_API APlatePawn : public APawn
 {
@@ -43,7 +43,7 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-
+	FOnSpawnAnotherBall OnSpawnAnotherBall;
 
 protected:
 	// Called when the game starts or when spawned

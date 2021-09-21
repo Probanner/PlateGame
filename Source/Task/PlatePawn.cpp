@@ -50,7 +50,7 @@ APlatePawn::APlatePawn()
 void APlatePawn::BeginPlay()
 {
 	Super::BeginPlay();
-	ScoreComponent->SpawnBall(CameraBoom->GetRelativeLocation());
+	OnSpawnAnotherBall.Broadcast();
 }
 
 // Called every frame
@@ -73,15 +73,26 @@ void APlatePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 
 void APlatePawn::InputAxisX(float InputX)
-{
-	FRotator RotateTemp(InputX, 0, 0);
-	SceneComponent->AddRelativeRotation(RotateTemp.Quaternion());
+{	
+	if ((SceneComponent->GetRelativeRotation().Pitch < 25 && InputX>0) 
+	|| (SceneComponent->GetRelativeRotation().Pitch > -25 && InputX < 0))
+	{	
+		float DeltaTime = FApp::GetDeltaTime();
+		FRotator RotateTemp(InputX * DeltaTime * 100, 0, 0);
+		SceneComponent->AddRelativeRotation(RotateTemp.Quaternion());
+	}
 }
+	
 
 void APlatePawn::InputAxisY(float InputY)
 {
-	FRotator RotateTemp(0, InputY, 0);
-	SceneComponent->AddRelativeRotation(RotateTemp.Quaternion());
+	if ((SceneComponent->GetRelativeRotation().Roll < 25 && InputY>0)
+		|| (SceneComponent->GetRelativeRotation().Roll > -25 && InputY < 0))
+	{
+		float DeltaTime = FApp::GetDeltaTime();
+		FRotator RotateTemp(0, 0, InputY * DeltaTime * 100);
+		SceneComponent->AddRelativeRotation(RotateTemp.Quaternion());
+	}
 }
 
 //BeginOverlap на середину платформы
@@ -124,8 +135,10 @@ void APlatePawn::KillBoxOverlap(UPrimitiveComponent* OverlappedComp,
 		ScoreComponent->SetScore(MinusPointValue);
 		if (ScoreComponent->GetScore() >= 0)
 		{
-			ScoreComponent->SpawnBall(CameraBoom->GetRelativeLocation());
+			//ScoreComponent->SpawnBall(CameraBoom->GetRelativeLocation());
+			OnSpawnAnotherBall.Broadcast();
 		}
+		
 	}
 	
 }

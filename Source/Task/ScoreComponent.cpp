@@ -32,32 +32,6 @@ void UScoreComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
-//Рандомные координаты спауна шарика
-FVector UScoreComponent::GetRandomLocationToSpawn(FVector _CameraVector)
-{
-	_CameraVector += FVector(FMath::RandRange(-500, 500), FMath::RandRange(-500, 500), -50);
-	return _CameraVector;
-}
-
-//Спаун шарика
-void UScoreComponent::SpawnBall(FVector _CameraLocation)
-{
-
-	FActorSpawnParameters TempSpawnParams;
-	FTransform BallToSpawnTransform;
-	BallToSpawnTransform.SetLocation(GetRandomLocationToSpawn(_CameraLocation));
-
-
-	ABall* BallActor = Cast<ABall>(GetWorld()->SpawnActor(BallToSpawn, &BallToSpawnTransform, TempSpawnParams));
-	if (BallActor)
-	{
-		BallActor->BallMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		BallActor->BallMesh->SetSimulatePhysics(true);
-	
-	}
-	
-}
-
 //Изменение счета
 void UScoreComponent::SetScore(float _newScore)
 {
